@@ -104,3 +104,84 @@ Item pada ListView saat ini ketika ditekan masih belum memberikan aksi tertentu.
 
 untuk tampilan awal masih sama, namun tiap item belanja dapat ditekan dan mengarahkan ke halaman error
 ![Klik item mengarahkan ke unimplemented error](images/3.gif)
+
+**Tugas Praktikum 2**
+
+1. Untuk melakukan pengiriman data ke halaman berikutnya, cukup menambahkan informasi arguments pada penggunaan Navigator. Perbarui kode pada bagian Navigator menjadi seperti berikut.
+
+```dart
+Navigator.pushNamed(context, '/item', arguments: item);
+```
+
+2. Pembacaan nilai yang dikirimkan pada halaman sebelumnya dapat dilakukan menggunakan ModalRoute. Tambahkan kode berikut pada blok fungsi build dalam halaman ItemPage. Setelah nilai didapatkan, anda dapat menggunakannya seperti penggunaan variabel pada umumnya. (https://docs.flutter.dev/cookbook/navigation/navigate-with-arguments)
+   <br>
+   Setelah item_page mendapatkan argumen dan ditambahkan fungsi build, sekarang item_page menampilkan detail item
+   ![Navigasi ke detail item](images/4.gif)<br>
+3. Pada hasil akhir dari aplikasi belanja yang telah anda selesaikan, tambahkan atribut foto produk, stok, dan rating. Ubahlah tampilan menjadi GridView seperti di aplikasi marketplace pada umumnya.
+   ![Tampilan baru GridView](images/5.png)<br>
+4. Silakan implementasikan Hero widget pada aplikasi belanja Anda dengan mempelajari dari sumber ini: https://docs.flutter.dev/cookbook/navigation/hero-animations
+   ![Implementasi Hero](images/6.gif)<br>
+5. Sesuaikan dan modifikasi tampilan sehingga menjadi aplikasi yang menarik. Selain itu, pecah widget menjadi kode yang lebih kecil. Tambahkan Nama dan NIM di footer aplikasi belanja Anda.
+   ![Hasil Modifikasi](images/7.gif)<br>
+6. Selesaikan Praktikum 5: Navigasi dan Rute tersebut. Cobalah modifikasi menggunakan plugin go_router, lalu dokumentasikan dan push ke repository Anda berupa screenshot setiap hasil pekerjaan beserta penjelasannya di file README.md. Kumpulkan link commit repository GitHub Anda kepada dosen yang telah disepakati!<br>
+
+<br>
+   Tambahkan dependency go_router pada pubspec.yaml<br>
+
+```yaml
+go_router: ^14.2.0
+```
+
+Jalankan perintah berikut:<br>
+
+```shell
+flutter pub get
+```
+
+Modifikasi main.dart
+
+```dart
+void main() {
+  runApp(const BelanjaApp());
+}
+```
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    final GoRouter router = GoRouter(
+      initialLocation: '/',
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => HomePage(),
+        ),
+        GoRoute(
+          path: '/item',
+          builder: (context, state) {
+            final item = state.extra as Item?;
+            return ItemPage(item: item!);
+          },
+        ),
+      ],
+    );
+
+    return MaterialApp.router(
+      title: 'Belanja App (GoRouter)',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        useMaterial3: true,
+      ),
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+```
+
+Modifikasi home_page:
+
+```dart
+context.push('/item', extra: item);
+```
+
+Hasil akhir output masih sama, namun navigasi menjadi lebih aman & clean
